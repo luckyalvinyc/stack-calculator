@@ -10,3 +10,7 @@ cd stack-calculator
 index.html
 
 ```
+
+![Example 1](./screens/screenshot-1.jpg?raw=true)
+![Example 2](./screens/screenshot-2.jpg?raw=true)
+![Example 3](./screens/screenshot-3.jpg?raw=true)
