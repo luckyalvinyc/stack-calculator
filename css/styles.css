@@ -1,203 +1,183 @@
-/* open-sans-300 - latin */
-@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 300;
-  src: local('Open Sans Light'), local('OpenSans-Light'),
-       url('../fonts/open-sans-v13-latin-300.woff2') format('woff2'), /* Chrome 26+, Opera 23+ */
-       url('../fonts/open-sans-v13-latin-300.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
-/* open-sans-regular - latin */
-@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Open Sans'), local('OpenSans'),
-       url('../fonts/open-sans-v13-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+ */
-       url('../fonts/open-sans-v13-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
-/* open-sans-600 - latin */
-@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 600;
-  src: local('Open Sans Semibold'), local('OpenSans-Semibold'),
-       url('../fonts/open-sans-v13-latin-600.woff2') format('woff2'), /* Chrome 26+, Opera 23+ */
-       url('../fonts/open-sans-v13-latin-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-}
-/* open-sans-700 - latin */
-@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 700;
-  src: local('Open Sans Bold'), local('OpenSans-Bold'),
-       url('../fonts/open-sans-v13-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+ */
-       url('../fonts/open-sans-v13-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 html {
-    font-size: 34px;
-    min-width: 1140px;
+  font-size: 34px;
+  height: 100%;
 }
 
 body {
-    font-family: 'Open Sans', sans-serif;
-    background: #2c3e50;
-    color: #f1c40f;
-    font-weight: 400;
-    font-size: 1.05em;
+  font-family: 'Open Sans', sans-serif;
+  background: #2c3e50;
+  color: #f1c40f;
+  font-weight: 400;
+  font-size: 1.05em;
+  height: 100%;
 }
 
 h3 {
-    font-weight: 600;
-}
-
-.row {
-    margin-bottom: 10px;
-    -webkit-user-select: none;
-}
-
-.result span {
-    margin-top: 15px;
-    font-weight: 600;
-    padding: 0 30px;
-    font-size: 4.5vw;
-    border: 2px solid #3498db;
-    display: inline-block;
-    overflow: hidden;
-}
-
-.result span:empty {
-    display: none;
+  font-weight: 600;
 }
 
 .container {
-    text-align: center;
-    overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  -webkit-user-select: none;
+}
+
+.col {
+  flex: 1;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.result > span {
+  font-weight: 600;
+  padding: 10px 25px;
+  font-size: 100%;
+  border: 2px solid #3498db;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.result span:empty {
+  display: none;
 }
 
 .content {
-    font-size: 150%;
-    padding: 3em 0;
+  font-size: 150%;
+  padding: 3em 0;
 }
 
 .input {
-    position: relative;
-    z-index: 1;
-    display: inline-block;
-    margin: .3em;
-    max-width: 700px;
-    width: calc(100% - 2em);
-    vertical-align: top;
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  margin: 0.3em;
+  max-width: 700px;
+  width: calc(100% - 2em);
+  vertical-align: top;
 }
 
 .input__field {
-    position: relative;
-    display: block;
-    /*float: right;*/
-    padding: 0.8em;
-    width: 60%;
-    border: 0;
-    border-radius: 0;
-    background: #f0f0f0;
-    /*color: #1abc9c;*/
-    font-weight: 400;
+  position: relative;
+  display: block;
+  padding: 0.8em;
+  width: 60%;
+  border: 0;
+  border-radius: 0;
+  background: #f0f0f0;
+  font-weight: 400;
 }
 
 .input__field:focus {
-    outline: none;
+  outline: none;
 }
 
 .input__label {
-    display: inline-block;
-    padding: 0 1em;
-    width: 40%;
-    font-weight: 300;
-    font-size: 70.25%;
-    user-select: none;
+  display: inline-block;
+  padding: 0 1em;
+  width: 40%;
+  font-weight: 300;
+  font-size: 70.25%;
+  user-select: none;
 }
 
 .input__label-content {
-    position: relative;
-    display: block;
-    padding: 1.65em 0;
-    width: 100%;
+  position: relative;
+  display: block;
+  padding: 1.65em 0;
+  width: 100%;
 }
 
 .input--hoshi {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 .input__field--hoshi {
-    margin-top: 1em;
-    padding: 0.50em 0.15em;
-    width: 100%;
-    background: transparent;
+  width: 100%;
+  color: #f1c40f;
+  margin-top: 1em;
+  padding: 0.5em 0.15em;
+  background: transparent;
 }
 
 .input__label--hoshi {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    padding: 0 0.25em;
-    width: 100%;
-    height: calc(100% - 1em);
-    text-align: left;
-    pointer-events: none;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 0 0.25em;
+  width: 100%;
+  height: calc(100% - 1em);
+  text-align: left;
+  pointer-events: none;
 }
 
 .input__label-content--hoshi {
-    position: absolute;
+  position: absolute;
 }
 
 .input__label--hoshi:before,
 .input__label--hoshi:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: calc(100% - 10px);
-    border-bottom: 1px solid #b9c1ca;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 10px);
+  border-bottom: 1px solid #b9c1ca;
 }
 
 .input__label--hoshi:after {
-    margin-top: 2px;
-    border-bottom: 4px solid red;
-    transform: translate3d(-100%, 0, 0);
-    transition: transform 0.3s;
+  margin-top: 2px;
+  border-bottom: 4px solid red;
+  transform: translate3d(-100%, 0, 0);
+  transition: transform 0.3s;
 }
 
 .input__label--hoshi-color-1::after {
-    border-color: hsl(200, 100%, 50%);
-    transition: all 0.3s ease-in-out;
+  border-color: hsl(200, 100%, 50%);
+  transition: all 0.3s ease-in-out;
 }
 
 .error-text::after {
-    border-color: hsl(6, 78%, 57%);
+  border-color: hsl(6, 78%, 57%);
 }
 
 .input__field--hoshi:focus + .input__label--hoshi:after,
 .input--filled .input__label--hoshi::after {
-    transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 
 .input__field--hoshi:focus + .input__label--hoshi .input__label-content--hoshi,
 .input--filled .input__label-content--hoshi {
-    animation: anim-1 0.3s forwards;
+  animation: anim-1 0.3s forwards;
 }
 
 @keyframes anim-1 {
-    50% {
-        opacity: 0;
-        transform: translate3d(1em, 0, 0);
-    }
-    51% {
-        opacity: 0;
-        transform: translate3d(-1em, -40%, 0);
-    }
-    100% {
-        opacity: 1;
-        transform: translate3d(0, -40%, 0);
-    }
+  50% {
+    opacity: 0;
+    transform: translate3d(1em, 0, 0);
+  }
+  51% {
+    opacity: 0;
+    transform: translate3d(-1em, -40%, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, -40%, 0);
+  }
 }

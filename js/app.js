@@ -1,157 +1,169 @@
+const Sign = {
+  POWER: '^',
+  ADDITION: '+',
+  SUBTRACTION: '-',
+  DIVISION: '/',
+  MULTIPLICATION: '*',
+}
+
 Array.prototype.isEmpty = function() {
-	return this.length === 0 ? true : false
+  return this.length === 0
 }
 
 Array.prototype.top = function() {
-	return this[this.length - 1]
+  return this[this.length - 1]
 }
 
 function Infix2Postifx(exp) {
-	this.exp = exp
-	this.result = ""
+  this.exp = exp
+  this.result = ''
 }
 
 Infix2Postifx.prototype.hasGreaterPriority = function(oprtr1, oprtr2) {
-	if (this.getPriority(oprtr1) >= this.getPriority(oprtr2)) {
-		return true
-	}
-	return false
+  return this.getPriority(oprtr1) >= this.getPriority(oprtr2)
 }
 
 Infix2Postifx.prototype.getPriority = function(oprtr) {
-	switch(oprtr) {
-		case "^": return 4
-		case "*":
-		case "/": return 3
-		case "-":
-		case "+": return 2
-		default : return -1
-	}
+  switch (oprtr) {
+    case Sign.POWER:
+      return 4
+    case Sign.MULTIPLICATION:
+    case Sign.DIVISION:
+      return 3
+    case Sign.SUBTRACTION:
+    case Sign.ADDITION:
+      return 2
+    default:
+      return -1
+  }
 }
 
 Infix2Postifx.prototype.isOperand = function(item) {
-	if (/\d/.test(item))
-		return true
-	return false
+  return /\d/.test(item)
 }
 
 Infix2Postifx.prototype.isOperator = function(item) {
-	switch(item) {
-		case "+":
-		case "-":
-		case "*":
-		case "/":
-		case "^": return true
-		default: return false
-	}
+  switch (item) {
+    case Sign.ADDITION:
+    case Sign.SUBTRACTION:
+    case Sign.MULTIPLICATION:
+    case Sign.DIVISION:
+    case Sign.POWER:
+      return true
+    default:
+      return false
+  }
 }
 
 Infix2Postifx.prototype.isOpeningParentheses = function(item) {
-	return item == "(" ? true : false
+  return item == '('
 }
 
 Infix2Postifx.prototype.isClosingParentheses = function(item) {
-	return item == ")" ? true : false
+  return item == ')'
 }
 
 Infix2Postifx.prototype.toPostfix = function() {
-	var arr = this.exp
-	var stack = []
+  let stack = []
+  const arr = this.exp
+  const len = arr.length
 
-	for (var i = 0, len = arr.length; i < len; i++) {
-		if (this.isOperand(arr[i]))
-			this.result += arr[i] + " "
-		else if (this.isOperator(arr[i])) {
-			while(!stack.isEmpty() &&
-					this.hasGreaterPriority(stack.top(), arr[i]) &&
-					!this.isOpeningParentheses(stack.top()))
-			{
-				this.result += stack.top() + " "
-				stack.pop()
-			}
-			stack.push(arr[i])
-		}
-		else if (this.isOpeningParentheses(arr[i]))
-			stack.push(arr[i])
-		else if(this.isClosingParentheses(arr[i])) {
-			while(!stack.isEmpty() && !this.isOpeningParentheses(stack.top())) {
-				this.result += stack.top() + " "
-				stack.pop()
-			}
-			stack.pop()
-		}
-	} // End of for loop
+  for (let i = 0; i < len; i++) {
+    const item = arr[i]
+    const left = arr[i - 1]
 
-	while(!stack.isEmpty()){
-		this.result += stack.top() + " "
-		stack.pop()
-	}
+    if (this.isOperand(item)) {
+      this.result += item + ' '
+    } else if (this.isOperator(item)) {
+      while (
+        !stack.isEmpty() &&
+        this.hasGreaterPriority(stack.top(), item) &&
+        !this.isOpeningParentheses(stack.top())
+      ) {
+        this.result += stack.pop() + ' '
+      }
 
-	return this.result
+      stack.push(item)
+    } else if (this.isOpeningParentheses(item)) {
+      stack.push(item)
+    } else if (this.isClosingParentheses(item)) {
+      while (!stack.isEmpty() && !this.isOpeningParentheses(stack.top())) {
+        this.result += stack.pop() + ' '
+      }
+
+      stack.pop()
+    }
+  } // End of for loop
+
+  while (!stack.isEmpty()) {
+    this.result += stack.pop() + ' '
+  }
+
+  return this.result
 }
 
-
 function CalculatePostfix(postFix) {
-	this.postFix = postFix
-	this.result = ""
+  this.postFix = postFix.split(' ')
+  this.result = ''
 }
 
 CalculatePostfix.prototype.calculate = function() {
-	var arr = this.postFix.split(" ")
-	var stack = []
-	var _flag = false
+  let stack = []
+  let _flag = false
+  const len = this.postFix.length
 
-	for (var i = 0, len = arr.length; i < len; i++) {
-		if(this.isOperator(arr[i])) {
-			while(!stack.isEmpty()) {
+  for (let i = 0; i < len; i++) {
+    const item = this.postFix[i]
+    const next = this.postFix[i + 1]
 
-				if (stack.length != 1) {
-					var operand1 = stack.pop(),
-						operand2 = stack.pop()
+    if (this.isOperator(item)) {
+      while (!stack.isEmpty()) {
+        if (stack.length !== 1) {
+          const operand1 = stack.pop()
+          const operand2 = stack.pop()
 
-					if (arr[i] == "^") {
-						var tmp
-						tmp = this.solvePower(operand2, operand1)
-						if (operand1 < 0)
-							tmp = 1/tmp
-						this.result = tmp
-					} else
-						this.result = eval(`${operand2} ${arr[i]} ${operand1}`)
+          if (item == Sign.POWER) {
+            let tmp = this.solvePower(operand2, operand1)
 
-				} else {
-					if (arr[i] == "-" && /\d/.test(arr[i+1]))
-						_flag = true
-					if (arr[i] == "-") {
-						var operand = stack.pop()
-						this.result = eval(`${arr[i]}(${operand})`)
-					}
-				}
-				stack.push(this.result)
+            if (operand1 < 0) tmp = 1 / tmp
 
-				break
-			}
-		}
-		else {
-			stack.push(arr[i])
-		}
-	};
+            this.result = tmp
+          } else {
+            this.result = eval(`${operand2} ${item} ${operand1}`)
+          }
+        } else {
+          if (item === Sign.SUBTRACTION && /\d/.test(next)) _flag = true
 
-	return _flag == true ? this.result * -1 : this.result
+          if (item === Sign.SUBTRACTION) {
+            const operand = stack.pop()
+            this.result = eval(`${item}(${operand})`)
+          }
+        }
+
+        stack.push(this.result)
+
+        break
+      }
+    } else {
+      stack.push(item)
+    }
+  }
+
+  return _flag ? this.result * -1 : this.result
 }
 
 CalculatePostfix.prototype.isOperator = Infix2Postifx.prototype.isOperator
 
 CalculatePostfix.prototype.solvePower = function(base, exp) {
+  let result = 1
+  exp = Math.abs(exp)
 
-	var result = 1
-	exp = Math.abs(exp)
-
-	if (exp == 0)
-		return result
-	else if (exp & 1) {
-		return result =  base * this.solvePower(base, exp - 1)
-	} else {
-		var tmp = this.solvePower(base, exp/2)
-		return result = tmp * tmp
-	}
+  if (exp == 0) {
+    return result
+  } else if (exp & 1) {
+    return (result = base * this.solvePower(base, exp - 1))
+  } else {
+    const tmp = this.solvePower(base, exp / 2)
+    return (result = tmp * tmp)
+  }
 }
