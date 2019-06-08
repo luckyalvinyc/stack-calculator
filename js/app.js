@@ -70,7 +70,6 @@ Infix2Postifx.prototype.toPostfix = function() {
 
   for (let i = 0; i < len; i++) {
     const item = arr[i]
-    const left = arr[i - 1]
 
     if (this.isOperand(item)) {
       this.result += item + ' '
