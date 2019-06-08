@@ -1,46 +1,65 @@
-function parz(item) {
-    var item = item.replace(/\s+/g, "").trim()
-    var result = []
-    var tmp = ""
+const OPERATORS = ['+', '-', '*', '/', '^']
 
-    if(typeof(item) !== "string")
-       return
+const clean = expression =>
+  expression
+    .replace(/\s+/g, '')
+    .replace(/%/g, '/')
+    .trim()
 
-    for (var i = 0, len = item.length; i < len; i++) {
+const isDigit = token => /[+-]?(\d*\.)?\d+$/.test(token)
 
-        var currItem = item[i]
-        tmp += currItem
+const isOperator = token => OPERATORS.indexOf(token) !== -1
 
-        if (currItem == "-") {
-            if (i == 0 || /[+\-*/(^]/.test(item[i-1])) {
-                if (/[\d.]+/.test(item[i+1])) {
-                    tmp += checkNext(item.substr(i+1, len))
-                    i += (tmp.length-1)
-                }
-            }
-        } else if (currItem == ".") {
-            tmp = "0" + tmp
-            // var initialLength = tmp.length //tmp.length = 2
-            tmp += checkNext(item.substr(i+1, len))
-            i += (tmp.length-2)
-        } else if (/\d+/.test(item[i])) {
-    		tmp += checkNext(item.substr(i+1, len))
-			i += (tmp.length-1)
-        }
+const checkNext = item => {
+  let tmp = ''
+  let i = 0
 
-        result.push(tmp)
-        tmp = ""
-    }
-    return result
+  while (/[\d.]+/.test(item[i])) {
+    tmp += item[i]
+    i++
+  }
+
+  return tmp
 }
 
+function parz(expression) {
+  let result = []
+  const tokens = clean(expression)
 
-function checkNext(item) {
-    var tmp = ""
-    var i = 0
-    while(/[\d.]+/.test(item[i])) {
-        tmp += item[i]
-        i++
+  if (typeof tokens !== 'string') return
+
+  const len = tokens.length
+
+  for (let i = 0; i < len; i++) {
+    const left = tokens[i - 1]
+    const token = tokens[i]
+    const right = tokens[i + 1]
+
+    let tmp = token
+
+    if (token == '-') {
+      if (i == 0 || /[-+*/(^]/.test(left)) {
+        if (isDigit(right)) {
+          tmp += checkNext(tokens.substr(i + 1, len))
+
+          i += tmp.length - 1
+        }
+      }
+    } else if (token == '.') {
+      tmp = '0' + tmp
+      tmp += checkNext(tokens.substr(i + 1, len))
+
+      i += tmp.length - 2
+    } else if (isDigit(token)) {
+      tmp += checkNext(tokens.substr(i + 1, len))
+
+      i += tmp.length - 1
+    } else if (token === '(' && !isOperator(left)) {
+      result.push('*')
     }
-    return tmp
+
+    result.push(tmp)
+  }
+
+  return result
 }
